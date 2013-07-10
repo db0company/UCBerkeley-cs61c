@@ -1,0 +1,33 @@
+What do the .data, .word, .text directives mean (i.e. what do you put in each section)?
+ In section data you put the values you will use ("global values"), .word is the size of the data
+ .text is your code
+
+Find the Text Segment in the "Execute" tab. What happened to the pseudo-instruction la (line 9)?
+ it's done using lui and ori, because the address is 32 bits long so it's splitted
+
+How do you set a breakpoint in MARS? Set a breakpoint on line 14 and run to it. What is the instruction address? Has line 14 executed yet?
+ check the line on the execute/textsegment tab
+ the address of the instruction
+ no
+
+Once at a breakpoint, how do you continue to execute your code? How do you step through your code? Run the code to completion.
+ f5 to run
+ f7 to step
+
+Find the "Run I/O" window. What number did the program output? Which fib number is this?
+ f 9 = 34
+
+At what address is n stored in memory? Try finding this by (1) looking at the Data Segment and (2) looking at the machine code (Code column in the Text Segment).
+ 0x10010000 + 10 = 0x10010010
+
+Without using the "Edit" tab, have the program calculate the 13th fib number by manually modifying this memory location before execution. You may find it helpful to uncheck the "Hexadecimal Values" box at the bottom of the Data Segment.
+ 223
+
+How do you view and modify the contents of a register? Reset the simulation (Run-->Reset or F12) and now calculate the 13th fib number by (1) breaking at a well-chosen spot, (2) modifying a single register, and then (3) unsetting the breakpoint.
+ registers are on the right
+ break at line 11, when the n is loaded, then change it
+
+Lines 19 and 21 use the syscall instruction. What is it and how do you use it? (Hint: look in Help)
+ It's calling extra external functions, first it's calling a syscall that will print an integer then it exits
+ we need to set the arguments first ($ax) and put the syscall number in $v0
+
