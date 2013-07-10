@@ -1,0 +1,86 @@
+/============\
+| Homework 0 |
+\============/
+
+Submission Instructions:
+=======================
+  1)	Create a directory in your class account called hw0 and save this text file as hw0.txt
+  2)	Answer the questions below by editing this text document and then save it.
+  3)	Find a recognizable photo of yourself, in JPEG and no larger than 600x600, and save it as me.jpg
+  4)	From within the hw0 directory, type "submit hw0"
+
+
+
+Name:		Barbara Lepage
+Login:		cs61c-gm
+E-mail:		lepage.barbara@gmail.com
+Section:	10_
+
+
+Mini-Biography:
+==============
+Classes can sometimes feel so impersonal!  We created this mini-bio so we may get to know each other a little better. 
+
+This will be kept confidential amongst the staff, but you don't have to fill in anything you don't wish to.
+
+** The staff will answer them too, so how about you? **
+
+
+--> Where did you grow up? What was your academic path?
+(e.g. Did you live in the same town all your life or did you move around; and if so, where? Did you go to community college or another school before this one?)
+
+I grew up in a small town near Nice, in the south of France. My primary school was there, but when I started high school, I went to my mother's one because she was the director. Then I moved to Paris to study Computer Science in a private institute called Epitech. I wanted to study abroad so I moved to Long Beach, where I did two semesters. Finally, I moved to San Francisco for a Summer Session in Berkeley.
+
+
+--> How much programming have you done (and what languages)?
+
+I'm into programming since 2007, starting with web, moving around networking, jumping on software and objects, entering deep inside functionnal programming and now playing around Android and Glass.
+
+Software
+C, x86 Assembly, C++, Perl (GTK), OCaml
+
+Scripting, Markup
+Bash, Perl, PHP, ASS, LaTeX, JSON, XML
+
+Web
+PHP5, XHTML5, CSS3, LESS, OCaml (Ocsigen), MySQL, PostgreSQL, Node.JS, Javascript, JQuery
+
+
+--> What are your hobbies?
+
+Tons of ideas come out of my head and my goal in life is to achieve them all.
+I create teams to develop them and publish them. Managing projects is my passion.
+
+I also like traveling, cooking and food photography.
+
+
+--> What are some of your talents and skills?
+
+Getting things done.
+I'm the kind of person who never procrastinate. I have new ideas of exciting projects everyday, so to make them come true, I'm very organized. If you work with me, you'll understand what "productivity" means!
+
+In a simple world.
+I believe that things should be easy to understand and to use, so they're more entertaining and sharable. That's why I like ergonomy, documentation, maintainability and open-sourcing.
+
+To make it a better place.
+While some people would want to raise children or be a millionaire, my goal in life is to save the world... or at least enhance it as much as I can. It's my motivation factor, my passion, my talent.
+
+
+--> Have you done anything remarkable? Has anything really memorable happened to you?
+(e.g. travel, meeting famous people, 15 min of fame, inventions, overcoming adversity, etc.)
+
+I founded my first organization when I was 13. It was online and I was the leader of a team of about 30 people, volonteering on subtitling. I quited to start some new projects when 3 years later but the organization is still working today. I'm pretty proud of this, since it was my first "big" project.
+
+After that, I founded an online school of subtitling that delivered cretificate highly recognized in the French subtitling industry. Unfortunately, it was a time comsumer and we were not making enough money to maintain it, so I had to take the hard decision to close it.
+
+When I entered University, I negociated a job with the school directors to manage a team of ~ 50 people that would develop and maintain tools for the student's lives, like an online newspaper, an internal social network and an official API to get and publish information about students. I'm still remotely working for them.
+
+
+--> What commitments will be consuming your cycles this term?
+(e.g. classes, jobs, family, commutes, volunteering, sports, student groups, etc.)
+
+I'm currently creating my own company with a team of 10 people that I manage remotely. Together, we are coding on a very big project that takes us pretty much all our spare time, + I started working on the communication around our project while coding on it.
+To be honest, this project is my priority and even though I will do my best to avoid it, I will probably have to skip some classes/homeworks for this matter.
+
+I also take another management class this semester.
+
