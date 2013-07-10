@@ -15,3 +15,7 @@
 *.exe
 *.out
 *.app
+
+.*
+Downloads/
+Mars4_3.jar
