@@ -1,0 +1,68 @@
+CS 61C Homework 1
+Name: Barbara Lepage
+Login: gm
+
+
+Problem 1
+
+UNSIGNED
+0b01111111:127
+0x90:144
+0xE5:229
+138:138
+128:128
+-128:N/A
+
+SIGN&MAG
+0b01111111:127
+0x90:-16
+0xE5:-101
+138:010
+128:-0
+-128:N/A
+
+ONE'S
+0b01111111:-0
+0x90:111
+0xE5:26
+138:117
+128:127
+-128:-0
+
+TWO'S
+0b01111111:129
+0x90:112
+0xE5:27
+138:118
+128:128
+-128:127
+
+BIASED
+0b01111111:0
+0x90:17
+0xE5:102
+138:11
+128:1
+-128:-255
+
+Problem 2
+
+a. unsigned overflow:
+Everything over 0b1011
+
+b. signed overflow:
+Everything over 0b0111
+
+Problem 3
+
+a. 2 gibi cats (meow?)
+
+b. (128 * (2^70)) / (512 * (2^40)) = 268435456 = 256 mebi
+
+c.
+Assuming that students have to pick one and only one answer per question:
+4^16 = 4294967296 = (2^2)^16 = 2^32 = 2^30 * 2^2 = 4 gibi
+
+d. 4^42 = 19342813113834066795298816 = (2^2)^42 = 2^84 = 2^80 * 2^4 = 16 yobi
+
+e. 2^(8 * 8) = 2^64 = 2^60 * 2^4 = 16 exbi
