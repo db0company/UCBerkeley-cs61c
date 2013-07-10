@@ -1,0 +1,63 @@
+CS 61C Su13 Homework 3
+Name: Barbara Lepage
+Login: gm
+
+Problem 1
+
+a. add, addi, sub
+b. The destination register
+c. andi, ori
+d. 57(hex)
+e. $gp 1000 8000.  increase
+f. xor: opcode 0, func 38(ten), xori: opcode 14(ten). xori is zero extended (like andi and ori)
+g. Kilo usually means it's calculated in decimal and Kibi in binary, so 1 kilo = 1000 (10^3) while 1 kibi = 1024 (2^10). Seems like the disk and communication use kilo while memory uses kibi.
+h. $7 = $a3, the arguments registers, so it can be changed whenever a function is called.
+
+Problem 2
+
+Add comments to each line:
+
+# a0 = integer
+# a1 = pointer to array
+# t0 = offset
+# t1 = counter
+# t2 = character
+
+fun:    addi $t0,$zero,32
+	# t0 = 32 = offset
+	addi $t1,$zero,0
+	# t1 = 0 = counter
+loop:   sub $t0,$t0,4
+	# t0 -= 4 = 28, 24, 20, 16, 12, 8, 4, 0 = offset
+	srlv $t2,$a0,$t0
+	# t2 = a0 >> t0
+	andi $t2,$t2,15
+	# t2 &= 15 (= get the last 4 bits)
+	# these 2 operations are equivalent to character = nb % 16, nb /= 16
+	slti $t3,$t2,10
+	# t3 = t2 < 10 ? 1 : 0
+	bne  $t3,$zero,addLess
+	# if t3 == 0, jump on addLess (just skip the next line)
+	addi $t2,$t2,7
+	# t2 += 7 (because the letters in ASCII are not right after the digits)
+addLess:addi $t2,$t2,48
+	# t2 += 48 (convert a number to a character (2 = '2'))
+	add  $t4,$a1,$t1
+	# t4 = a1 (array) + counter
+	sb   $t2,0($t4)
+	# store the new character in the array
+	beq  $t0,$zero,done
+	# if t0 (offset) == 0, it's the end
+	addi $t1,$t1,1
+	# t1++ (increment counter)
+	j loop
+	# jump to the begining of the loop
+done:   sb   $zero,1($t4)
+	# array[end] = 0 (end of the string)
+	jr   $ra
+	# jump to the next instruction at the end of the function
+
+Explain what is in the array as the function returns (1-2 sentences):
+
+This function converts a number into a string corresponding to its
+hexadecimal value. It's the equivalent of: sprintf("%X", n);
