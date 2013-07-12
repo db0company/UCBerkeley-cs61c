@@ -98,6 +98,29 @@ int main(void) {
   print_heap_status();
 
 
+  /* Uncomment them one by one! */
+
+  /* printf("\n"); */
+  /* printf("### Tests fail\n"); */
+
+  /* write on reserved */
+  /* store_mem(CODE_BOTTOM / 2, SIZE_WORD, 0x123); */
+
+  /* write on code (read-only) */
+  /* store_mem(CODE_BOTTOM + 10, SIZE_WORD, 0x123); */
+
+  /* read on freed on heap */
+  /* load_mem(m2, SIZE_WORD); */
+
+  /* write on freed on heap */
+  /* store_mem(m2, SIZE_WORD, 0x123); */
+
+  /* read on unaligned address */
+  /* load_mem(sp - 11, SIZE_WORD); */
+
+  /* above mem size */
+  /* store_mem(MEM_SIZE + 2, SIZE_WORD, 0x123); */
+
   destroy_mem();
 
   return 0;

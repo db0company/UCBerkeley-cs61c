@@ -190,11 +190,11 @@ typedef struct {
 /* Called by program loader to initialize memory. */
 uint8_t* init_mem() {
   assert (mem == NULL);
-  mem = (uint8_t*) calloc(MEM_SIZE, sizeof(uint8_t)); // allocate zeroed memory
+  mem = (uint8_t*) calloc(MEM_SIZE, sizeof(uint8_t)); /* allocate zeroed memory */
   if (mem == NULL)
     fprintf(stderr, "%s: Allocation Failed\n", __FUNCTION__);
   heap = NULL;
-  last_address = CODE_TOP;
+  last_address = HEAP_BOTTOM;
   return (uint8_t*) mem;
 }
 
@@ -232,8 +232,8 @@ void print_heap_status() {
 /* Heap Getters                                          */
 /* ***************************************************** */
 
-/* if !mipsaddr, any block with enough size will match */
-/* if !size, any size will match */
+/* if !mipsaddr, any block with enough size will match
+ * if !size, any size will match */
 static bool aux_find_in_heap(void * va, void * vp) {
   block * a = va;
   block * p = vp;
@@ -285,14 +285,15 @@ static block * find_allocated_block_in_heap_any_size(uint32_t mipsaddr) {
 /* Check access in virtual memory                        */
 /* ***************************************************** */
 
-/* Check if any part of the memory that you try to access is in the range, inclusive - exclusive */
+/* Check if any part of the memory that you try to access is in the range,
+ * inclusive - exclusive */
 static int check_range_ie(uint32_t mipsaddr, mem_unit_t size, uint32_t min, uint32_t max) {
   return mipsaddr >= min && (mipsaddr + size) < max;
 }
 
 /* Returns 1 if memory access is ok, otherwise returns 0. 
-   The parameter write_permission is the macro READ if this is
-   a read request, and WRITE if it is a write request. See memory.h. */
+ * The parameter write_permission is the macro READ if this is
+ * a read request, and WRITE if it is a write request. See memory.h. */
 int access_ok(uint32_t mipsaddr, mem_unit_t size, uint8_t write_permission) {
   return
     !(
@@ -304,8 +305,8 @@ int access_ok(uint32_t mipsaddr, mem_unit_t size, uint8_t write_permission) {
 	  && check_range_ie(mipsaddr, size, CODE_BOTTOM, CODE_TOP))
 
       /* Access unallocated on HEAP */
-      /* || (check_range_ie(mipsaddr, size, HEAP_BOTTOM, HEAP_TOP) */
-      /* 	  && find_allocated_block_in_heap(mipsaddr, size)) */
+      || (check_range_ie(mipsaddr, size, HEAP_BOTTOM, HEAP_TOP)
+	   && !find_allocated_block_in_heap(mipsaddr, size))
 
       /* Unaligned adress */
       || (mipsaddr % size)
