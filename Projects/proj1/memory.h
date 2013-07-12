@@ -20,17 +20,16 @@ typedef enum {
 #define READ 0
 
 
-uint8_t *init_mem();
+uint8_t *init_mem(void);
+void destroy_mem(void);
 void store_mem(uint32_t mipsaddr, mem_unit_t size, uint32_t value);
 uint32_t load_mem(uint32_t mipsaddr, mem_unit_t size);
 
 
 //NEW FUNCTIONS
-uint8_t *init_heap_status();
 uint32_t first_fit_malloc(uint32_t size);
 void block_free(uint32_t mipsaddr);
-void print_heap_status();
-void bad_free(uint32_t mipsaddr);
+void print_heap_status(void);
 uint32_t next_fit_malloc(uint32_t size);
 
 

@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "memory.h"
 #include "processor.h"
 #include "disassemble.h"
 
@@ -123,6 +124,7 @@ void handle_syscall(processor_t* p)
 
   case 10: // exit
     printf("exiting the simulator\n");
+    destroy_mem();
     exit(0);
     break;
 
