@@ -399,6 +399,8 @@ static block * use_this_item(item * this_item, uint32_t size) {
 /* No block freed available, so create a new block */
 static block * allocate_new_block(uint32_t size) {
   block * result;
+  if (last_address + size >= MEM_SIZE)
+    return NULL;
   heap = list_insert(heap, (result = new_block(true, last_address, size)));
   last_address += size;
   merge_blocks();
@@ -410,14 +412,16 @@ static block * allocate_new_block(uint32_t size) {
  * if allocation is successful, returns 0 on failure. */
 uint32_t first_fit_malloc(uint32_t size) {
   item * available;
+  block * result;
   if (!size)
     return 0;
   while (size % SIZE_WORD) /* always allocate on 4 bytes aligned */
     ++size;
   return
-    ((available = find_available_item_in_heap(size)) ?
-     use_this_item(available, size)
-     : allocate_new_block(size))->mipsaddr;
+    (result = ((available = find_available_item_in_heap(size)) ?
+	       use_this_item(available, size)
+	       : allocate_new_block(size)) ?
+     result->mipsaddr : 0;
 }
 
 /* Free the allocated block of memory in the heap beginning at
@@ -425,8 +429,10 @@ uint32_t first_fit_malloc(uint32_t size) {
  * be the beginning of a block that was allocated on the heap. 
  * If block_free() is called on an unallocated memory address or an address
  * that is not the beginning of a block, bad_free() should be called. */
-void block_free(uint32_t mipsaddr){
+void block_free(uint32_t mipsaddr) {
   block * b;
+  if (!mipsaddr)
+    return ;
   if (!(b = find_allocated_block_in_heap_any_size(mipsaddr)))
     bad_free(mipsaddr);
   b->used = false;
