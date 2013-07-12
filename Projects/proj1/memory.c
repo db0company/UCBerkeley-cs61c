@@ -300,21 +300,21 @@ static block * use_this_item(item * this_item, uint32_t size) {
 }
 
 static block * allocate_new_block(uint32_t size) {
-  void * memory;
   block * result;
-  if (!(memory = malloc(size)))
-    allocation_failed();
-  heap = list_insert(heap, (result = new_block(true, (uint32_t)memory, size)));
+  last_address += size;
+  heap = list_insert(heap, (result = new_block(true, last_address, size)));
   return result;
 }
 
 /*Uses the first fit algorithm to allocate a block of size bytes 
 in the heap. Returns the address of the start of the block 
 if allocation is successful, returns 0 on failure.*/
-uint32_t first_fit_malloc(uint32_t size){
+uint32_t first_fit_malloc(uint32_t size) {
   item * available;
   if (!size)
     return 0;
+  while (size % SIZE_WORD) /* always allocate on 4 bytes aligned */
+    ++size;
   return
     ((available = find_available_item_in_heap(size)) ?
      use_this_item(available, size)
