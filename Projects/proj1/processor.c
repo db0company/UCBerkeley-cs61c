@@ -96,13 +96,17 @@ static void jal(processor_t * p, inst_t inst) {
 }
 
 static void beq(processor_t * p, inst_t inst) {
-  if (Irs == Irt)
-    p->pc = nextpc + (signext(Ioffset) * SIZE_WORD);
+  p->pc =
+    (Irs == Irt ?
+     nextpc + (signext(Ioffset) * SIZE_WORD)
+     : nextpc);
 }
 
 static void bne(processor_t * p, inst_t inst) {
-  if (Irs != Irt)
-    p->pc = nextpc + (signext(Ioffset) * SIZE_WORD);
+  p->pc =
+    (Irs != Irt ?
+     nextpc + (signext(Ioffset) * SIZE_WORD)
+     : nextpc);
 }
 
 static void addiu(processor_t * p, inst_t inst) {
@@ -289,12 +293,13 @@ void execute_one_inst(processor_t * p, int prompt, int print_regs) {
     if (optor[i].opcode == inst.rtype.opcode) {
       optor[i].exe(p, inst);
       if (inst.rtype.opcode /* not special, cause it's been handled already */
-	  && optor[i].move_pc)
+	  && optor[i].move_pc) /* do I need to move the pointer? */
 	p->pc = nextpc;
-      return ;
+      goto end;
     }
   illegal(p, inst);
 
+ end:
   // enforce $0 being hard-wired to 0
   p->R[0] = 0;
 
