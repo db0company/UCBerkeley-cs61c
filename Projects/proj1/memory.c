@@ -399,7 +399,7 @@ static block * use_this_item(item * this_item, uint32_t size) {
 /* No block freed available, so create a new block */
 static block * allocate_new_block(uint32_t size) {
   block * result;
-  if (last_address + size >= MEM_SIZE)
+  if (last_address + size >= HEAP_TOP)
     return NULL;
   heap = list_insert(heap, (result = new_block(true, last_address, size)));
   last_address += size;
