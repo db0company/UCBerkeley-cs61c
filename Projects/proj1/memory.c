@@ -417,11 +417,11 @@ uint32_t first_fit_malloc(uint32_t size) {
     return 0;
   while (size % SIZE_WORD) /* always allocate on 4 bytes aligned */
     ++size;
-  return
-    (result = ((available = find_available_item_in_heap(size)) ?
-	       use_this_item(available, size)
-	       : allocate_new_block(size)) ?
-     result->mipsaddr : 0;
+  available = find_available_item_in_heap(size);
+  result = available ?
+    use_this_item(available, size)
+    : allocate_new_block(size);
+  return result ? result->mipsaddr : 0;
 }
 
 /* Free the allocated block of memory in the heap beginning at

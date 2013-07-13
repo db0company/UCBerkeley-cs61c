@@ -3,7 +3,7 @@
 
 #include "disassemble.h"
 
-void illegal(inst_t inst) {
+static void illegal(inst_t inst) {
   fprintf(stderr, "%s: illegal instruction: %08x\n", __FUNCTION__, inst.rtype.opcode);
   exit(-1);
 }
@@ -14,51 +14,78 @@ typedef struct {
   void (*printer)(char *, inst_t);
 } optos_t;
 
-void r(char * name, inst_t inst) {
-  printf("%s\t$%d,$%d,$%d\n", name, inst.rtype.rd, inst.rtype.rs, inst.rtype.rt);
+static void r(char * name,
+       inst_t inst) {
+  printf("%s\t$%d,$%d,$%d\n", name,
+	 inst.rtype.rd,
+	 inst.rtype.rs,
+	 inst.rtype.rt);
 }
 
-void r_shamt(char * name, inst_t inst) {
-  printf("%s\t$%d,$%d,%d\n", name, inst.rtype.rd, inst.rtype.rt, inst.rtype.shamt);
+static void r_shamt(char * name,
+	     inst_t inst) {
+  printf("%s\t$%d,$%d,%d\n", name,
+	 inst.rtype.rd,
+	 inst.rtype.rt,
+	 inst.rtype.shamt);
 }
 
-void r_rs(char * name, inst_t inst) {
-  printf("%s\t$%d\n", name, inst.rtype.rs);
+static void r_rs(char * name,
+	  inst_t inst) {
+  printf("%s\t$%d\n", name,
+	 inst.rtype.rs);
 }
 
-void i_offset(char * name, inst_t inst) {
-  printf("%s\t$%d,$%d,%d\n", name, inst.itype.rs, inst.itype.rt, inst.itype.imm * 4);
+static void i_offset(char * name,
+	      inst_t inst) {
+  printf("%s\t$%d,$%d,%d\n", name,
+	 inst.itype.rs,
+	 inst.itype.rt,
+	 inst.itype.imm * 4);
 }
 
-void i_rt_offset(char * name, inst_t inst) {
-  printf("%s\t$%d,%d($%d)\n", name, inst.itype.rt, inst.itype.imm, inst.itype.rs);
+static void i_rt_offset(char * name,
+		 inst_t inst) {
+  printf("%s\t$%d,%d($%d)\n", name,
+	 inst.itype.rt,
+	 inst.itype.imm, inst.itype.rs);
 }
 
-void i_rtrs(char * name, inst_t inst) {
-  printf("%s\t$%d,$%d,%d\n", name, inst.itype.rt, inst.itype.rs, inst.itype.imm);
+static void i_rtrs(char * name,
+	    inst_t inst) {
+  printf("%s\t$%d,$%d,%d\n", name,
+	 inst.itype.rt,
+	 inst.itype.rs,
+	 inst.itype.imm);
 }
 
-void i_rs_hex(char * name, inst_t inst) {
-  printf("%s\t$%d,0x%x\n", name, inst.itype.rs, inst.itype.imm);
+static void i_rt_hex(char * name,
+	      inst_t inst) {
+  printf("%s\t$%d,0x%x\n", name,
+	 inst.itype.rt,
+	 inst.itype.imm);
 }
 
-void i_rt_hex(char * name, inst_t inst) {
-  printf("%s\t$%d,0x%x\n", name, inst.itype.rt, inst.itype.imm);
+static void i_rtrs_hex(char * name,
+		inst_t inst) {
+  printf("%s\t$%d,$%d,0x%x\n", name,
+	 inst.itype.rt,
+	 inst.itype.rs,
+	 inst.itype.imm);
 }
 
-void i_rtrs_hex(char * name, inst_t inst) {
-  printf("%s\t$%d,$%d,0x%x\n", name, inst.itype.rt, inst.itype.rs, inst.itype.imm);
+static void j(char * name,
+       inst_t inst) {
+  printf("%s\t0x%x\n", name,
+	 inst.jtype.addr * 4);
 }
 
-void j(char * name, inst_t inst) {
-  printf("%s\t0x%x\n", name, inst.jtype.addr * 4);
-}
-
-void just_name(char * name, inst_t _) {
+static void just_name(char * name,
+	       inst_t _) {
   printf("%s\n", name);
 }
 
-optos_t special[] = {
+static const optos_t special[] = {
   {0x0, "sll", r_shamt},
   {0x2, "srl", r_shamt},
   {0x3, "sra", r_shamt},
@@ -72,19 +99,23 @@ optos_t special[] = {
   {0x26, "xor", r},
   {0x2a, "slt", r},
 };
-size_t special_size = sizeof(special) / sizeof(*special);
+static const size_t special_size = sizeof(special) / sizeof(*special);
 
-void s(char * _, inst_t inst) {
+/* This function browse the special table in case the opcode
+ * is 0, which is not enough to determine the type of the
+ * instruction, so you use the "funct" field. */
+static void s(char * _, inst_t inst) {
   ssize_t i;
   for (i = 0; i < special_size; ++i)
     if (special[i].opcode == inst.rtype.funct) {
-      special[i].printer(special[i].name, inst);
+      special[i].printer(special[i].name,
+ inst);
       return ;
     }
   illegal(inst);
 }
 
-optos_t optos[] = {
+static const optos_t optos[] = {
   {0x0, "special", s},
   {0xd, "ori", i_rtrs_hex},
   {0x2, "j", j},
@@ -100,13 +131,14 @@ optos_t optos[] = {
   {0x28, "sb", i_rt_offset},
   {0x2b, "sw", i_rt_offset},
 };
-size_t optos_size = sizeof(optos) / sizeof(*optos);
+static const size_t optos_size = sizeof(optos) / sizeof(*optos);
 
 void disassemble(inst_t inst) {
   ssize_t i;
   for (i = 0; i < optos_size; ++i)
     if (optos[i].opcode == inst.rtype.opcode) {
-      optos[i].printer(optos[i].name, inst);
+      optos[i].printer(optos[i].name,
+ inst);
       return ;
     }
   illegal(inst);
