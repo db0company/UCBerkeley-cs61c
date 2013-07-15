@@ -21,7 +21,6 @@ typedef enum {
 
 
 uint8_t *init_mem(void);
-void destroy_mem(void);
 void store_mem(uint32_t mipsaddr, mem_unit_t size, uint32_t value);
 uint32_t load_mem(uint32_t mipsaddr, mem_unit_t size);
 

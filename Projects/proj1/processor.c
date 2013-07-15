@@ -5,6 +5,7 @@
 #include "memory.h"
 #include "processor.h"
 #include "disassemble.h"
+void destroy_mem(void);
 
 #define upbits(a, n) (a >> ((sizeof(a) * 8) - n))
 #define nextpc (p->pc + SIZE_WORD)
