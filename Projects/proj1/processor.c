@@ -17,7 +17,7 @@
 #define Rrd p->R[inst.rtype.rd]
 #define Rrt p->R[inst.rtype.rt]
 #define Rrs p->R[inst.rtype.rs]
-#define Rshamt p->R[inst.rtype.shamt]
+#define Rshamt inst.rtype.shamt
 
 #define Irt p->R[inst.itype.rt]
 #define Irs p->R[inst.itype.rs]
@@ -33,7 +33,7 @@ static void illegal(processor_t * p, inst_t inst) {
 }
 
 static void sll(processor_t * p, inst_t inst) {
-  Rrd = Rrs < Rrt ? 1 : 0;
+  Rrd = Rrt << Rshamt;
 }
 
 static void srl(processor_t * p, inst_t inst) {
@@ -110,15 +110,18 @@ static void bne(processor_t * p, inst_t inst) {
 }
 
 static void addiu(processor_t * p, inst_t inst) {
-  Irt = Irs + signext(Iimm);
+  reg_t tmp = signext(Iimm);
+  Irt = Irs + tmp;
 }
 
 static void xori(processor_t * p, inst_t inst) {
-  Irt = Rrs ^ zeroext(Iimm);
+  reg_t tmp = zeroext(Iimm);
+  Irt = Rrs ^ tmp;
 }
 
 static void lui(processor_t * p, inst_t inst) {
-  Irt = Iimm << 16;
+  reg_t tmp = Iimm;
+  Irt = tmp << 16;
 }
 
 static void lb(processor_t * p, inst_t inst) {
