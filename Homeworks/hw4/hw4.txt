@@ -1,0 +1,213 @@
+CS 61C Homework 4
+Name: Barbara Lepage
+Login: gm
+
+Problem 1
+
+a: 0x1d000027
+
+    73.75
+    = ( 2^6 + 2^3 + 2^0 + ( 3 * 2^-2 ) ) ten
+    = 1001001.11 two
+    = 1.00100 two
+    = 1.00100111 two * 2^5 ten
+    
+    Sign = 1
+    Mantissa = 00100111
+    Exp = 5 - bias = 5 - 15 = -10 ten = 11010 two
+    
+    Final float = 1 11010 00000000000000000100111
+
+                =    1 1101 0000 0000 0000 0000 0010 0111
+    Hex         = 0x 1    d    0    0    0    0    2    7
+    
+b: 7.35547 KiB
+
+    exp min = -15
+    exp max = 11110 two - bias = 30 - 15 = 15 ten
+    mant min = 0
+    mant max = 11111111111111111111111 two = 8388607 ten
+    res = 1.8388607 * 2^15 = 60255.7874176
+    max float = 60255.7874176
+    max cannot represent = 60256 ten = 1110101101100000 two
+                         = 7.35547 KiB
+
+c: (0 if 0 is considered positive) or 2^0 + 2^1 + 2^2 + 2^3 + 2^4 + 2^6 + 2^8 + 2^9 + 2^11 + 2^13 + 2^14 + 2^15
+
+      60255 ten
+    = 1110101101011111 two
+    = 2^0 + 2^1 + 2^2 + 2^3 + 2^4 + 2^6 + 2^8 + 2^9 + 2^11 + 2^13 + 2^14 + 2^15 ten
+
+d: 0
+
+    exp: 0, mantissa: !0
+
+e: 31
+
+    11111 two
+    = 31 ten
+    with mantissa !0
+    
+
+Problem 2
+
+a: The assembly treats files seperatly. When it finds an unknown symbol,
+   it assumes that it's somewhere else and fill the address with 0s. The linker's
+   goal is to link all the seperate files together and resolve the missing addresses.
+
+b: No, only the file that has been changed will be compiled and assembled again.
+   Then the linker will link all the objects files together.
+
+c:   i. symbol table
+    ii. symbol table, relocation table
+   iii. symbol table
+
+
+Problem 3
+
+a: max = 21.47483648035691027047
+
+    CPU time = Inst    * Cycles per Instructions * Clock Cycle time
+    0.001 = 100 000 * CPI * 1 / (2GHz)
+    CPI = 0.001 / (100 000 * (1 / (2 * 2^30)))
+    CPI = 0.001/(100000*(1/(2*(2^30))))
+    CPI = 21.47483648035691027047
+
+b: System A is about ~3% faster than system B.
+
+    System A: Clock rate = 1.1 GHz -- CPI 1.5
+              CPU time = 1 * 1.5 * (1.1 * 2^30)
+                       = 1.65 * 2^30
+
+    System B: Clock rate = 1.4 GHz -- CPI 1.2
+              CPU time = 1 * 1.2 * (1.4 * 2^30)
+                       = 1.68 * 2^30
+
+   (1.68 / 100) * 1.65 = .02772
+
+c:  L1 cache:
+      HR = 90% = 0.9,
+      HT =  1,
+      MR = 1 - HR = 0.1
+    L2 cache:
+      HR = 80% = 0.8,
+      HT = 10,
+      MR = 1 - HR = 0.2,
+      MP = 100
+
+     i. Global Miss Rate = 2%
+
+           MR1 * MR2 = 0.1 * 0.2 = 0.02
+
+    ii. AMAT = 4
+
+           AMAT = HT1 + MR1 * (HT2 + MR2 * MP2)
+                =   1 + 0.1 * ( 10 + 0.2 * 100)
+                = 4
+
+   iii. AMAT = 11
+
+           AMAT = HT + MR * MP
+                = 1 + 0.1 * 100
+                = 11
+
+d: CPI stall = 2.85680
+
+    MP = 80 (I considered it was for both the D$ and the I$)
+    CPI base = 1.5
+    inst = 40% = 0.4
+    Inst Cache:
+      MR = 4% = 0.04
+    Data Cache:
+      MR = 6% = 0.06
+
+    CPI stall = CPI base + a/i * (( MR1 * MP1) + ( MR1 *  MR2 * MP2))
+              =      1.5 + 0.4 * ((0.04 *  80) + (0.04 * 0.06 *  80))
+              = 2.85680
+
+
+Problem 4
+
+  A = Memory addresses size = 16 bits
+  C = Cache size            = 64 bytes
+  K = Cache block           = 8 bytes
+
+a: Direct-mapped cache
+
+   TIO breakdown
+   T = A - I - O = 16 - 3 - 3 = 10
+   I = log2(C/K/N) = log2(64/8/1) = log2(8) = 3
+   O = log2(K) = log2(8) = 3
+   A = 16
+
+    i: 10 bits
+
+   ii: Bytes at addresses 0xabc8 to 0xabcf
+
+      0xabcd = 0b 1010 1011 1100 1101
+             = T[1010101111] I[001] O[101]
+
+      Addresses with the same index and the same tag.
+      0b 1010 1011 1100 1000 to 0b 1010 1011 1100 1111
+      0x    a    b    c    8 to 0x    a    b    c    f
+
+  iii: Addresses with the same index but not the same tag.
+       0b xxxx xxxx xx00 1xxx
+
+b: 2-way associative cache
+
+  Sets = C/K/N = 64/8/2 = 4 sets per slot
+  TIO breakdown
+  T = A - I - O = 16 - 2 - 3 = 11
+  I = log2(C/K/N) = log2(64/8/2) = 2
+  O = log2(K) = 3
+
+    i: 11 bits
+
+   ii: Bytes at addresses 0babc8 to 0xabcf
+
+      0xabcd = 0b 1010 1011 1100 1101
+             = T[10101011110] I[01] O[101]
+
+       Addresses with the same index and the same tag.
+
+  iii: Since we have 4 slots available for the set with the same
+       index as 0xabcd, the addresses with this index but not the
+       same tag have 3 chances out of 4 of a cache hit.
+       We dont know what is in the rest of the set, so NO address
+       is guaranteed to get a cache miss.
+
+c:
+
+    i: 85% to 90%
+
+       store and load will be on the same slots most of the time
+       worst case = MM HHx7 MH HH = 3 miss, 17 hit = 85%
+       best  case = MH HHx7 MH HH = 2 miss, 18 hit = 90%
+
+   ii: 80 to 87%
+
+       best case =
+       cannot have the same index for the load and store (enough bits in index and
+       required blocks too close),
+       2 miss compulsory first load/store, 1 miss for the load of 8th char (or another,
+       but will happen for sure since we have 10 iterations and only 8 blocks per slot),
+       then 1 hit for the store (blocks are contiguous), then hits
+       MM HHx7 MH HH = 3 miss, 17 hit = 85%
+
+       worst case =
+       MM MH HHx6 MH HH = 4 miss, 16 hit = 80%
+
+  iii: 0%
+
+       worst case = load and store have the same index, always miss
+                  = 0%
+       hypothetical best case (for any other big number) =
+                    not the same, so two miss (compulsory) for the first load and store,
+                    then hits,
+                    then two miss for the 8th char, load + store
+                  = MM HHx7 MM HH
+                  = 4 miss, 16 hits
+                  = 80%
+       But since 64 % 8 = 0, they will have the same index so the worst case always apply.
+
